@@ -5,26 +5,26 @@
 public class CustomerService {
     public static void Run() {
         // Example code to see what's in the customer service queue:
-        // var cs = new CustomerService(10);
-        // Console.WriteLine(cs);
+        var cs = new CustomerService(10);
+        Console.WriteLine(cs);
 
         // Test Cases
 
         // Test 1
-        // Scenario: 
-        // Expected Result: 
+        // Scenario: Create a queue with an invalid size (0) to see if it defaults to 10.
+        // Expected Result: The max_size should be 10.
         Console.WriteLine("Test 1");
 
-        // Defect(s) Found: 
+        // Defect(s) Found: None. The constructor logic was correct.
 
         Console.WriteLine("=================");
 
         // Test 2
-        // Scenario: 
-        // Expected Result: 
+        // Scenario:Add a customer and then serve them. 
+        // Expected Result: The system should display the correct customer data.
         Console.WriteLine("Test 2");
 
-        // Defect(s) Found: 
+        // Defect(s) Found: Fixed. The customer data was being lost because
 
         Console.WriteLine("=================");
 
@@ -67,7 +67,8 @@ public class CustomerService {
     /// </summary>
     private void AddNewCustomer() {
         // Verify there is room in the service queue
-        if (_queue.Count > _maxSize) {
+        
+        if (_queue.Count >= _maxSize) {
             Console.WriteLine("Maximum Number of Customers in Queue.");
             return;
         }
@@ -88,8 +89,12 @@ public class CustomerService {
     /// Dequeue the next customer and display the information.
     /// </summary>
     private void ServeCustomer() {
-        _queue.RemoveAt(0);
+        if (_queue.Count == 0) {
+        Console.WriteLine("The queue is empty. No one to serve.");
+        return;
+    }
         var customer = _queue[0];
+        _queue.RemoveAt(0);
         Console.WriteLine(customer);
     }
 
